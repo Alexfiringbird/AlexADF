@@ -1,0 +1,81 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "AlexDatafactoryTest"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"AzureDatabricksDeltaLake1_accessToken": {
+			"value": ""
+		},
+		"AzureDatabricksDeltaLake2_kbb_accessToken": {
+			"value": ""
+		},
+		"AzureFileStorage1_connectionString": {
+			"value": ""
+		},
+		"AzureSqlDatabase1_password": {
+			"value": ""
+		},
+		"AzureSynapseAnalytics1_connectionString": {
+			"value": ""
+		},
+		"FileServer1_password": {
+			"value": ""
+		},
+		"LS301_ASQL_Parm_connectionString": {
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=@{linkedService().P_LS_Host};Initial Catalog=@{linkedService().P_LS_DBName};User ID=@{linkedService().P_LS_UserName}"
+		},
+		"LS304_ASQL_ADF_SchProcFwk_connectionString": {
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=damadffwk01-prd01-sqldb-e2.database.chinacloudapi.cn;Initial Catalog=ADF_SchProcFwk;User ID=etl_prd_dw_pm"
+		},
+		"Sftp1_password": {
+			"value": ""
+		},
+		"alexdevsql_connectionString": {
+			"value": ""
+		},
+		"alexstoragegen2_accountKey": {
+			"value": ""
+		},
+		"AzureSqlDatabase1_properties_typeProperties_server": {
+			"value": "alexsqlserver.database.chinacloudapi.cn"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_database": {
+			"value": "alextes"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_userName": {
+			"value": "alex"
+		},
+		"FileServer1_properties_typeProperties_host": {
+			"value": "\\\\alexdevvm\\localshare"
+		},
+		"FileServer1_properties_typeProperties_userId": {
+			"value": "alex"
+		},
+		"LS300_AKV_damakv02_properties_typeProperties_baseUrl": {
+			"value": "https://test0311sqlcolumnkey.vault.azure.cn/"
+		},
+		"RestTest_properties_typeProperties_url": {
+			"value": "https://zlxocrtest.cognitiveservices.azure.cn/vision/v3.2/read/analyze"
+		},
+		"Sftp1_properties_typeProperties_host": {
+			"value": "10.1.0.6"
+		},
+		"Sftp1_properties_typeProperties_userName": {
+			"value": "sftptest"
+		},
+		"alexstoragegen2_properties_typeProperties_url": {
+			"value": "https://alexstoragegen2.dfs.core.chinacloudapi.cn/"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

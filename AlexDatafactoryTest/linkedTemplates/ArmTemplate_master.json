@@ -1,0 +1,218 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "数据工厂名称",
+			"defaultValue": "AlexDatafactoryTest"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"type": "secureString",
+			"metadata": "“AzureBlobStorage1”的“connectionString”的安全字符串"
+		},
+		"AzureDatabricksDeltaLake1_accessToken": {
+			"type": "secureString",
+			"metadata": "“AzureDatabricksDeltaLake1”的“accessToken”的安全字符串"
+		},
+		"AzureDatabricksDeltaLake2_kbb_accessToken": {
+			"type": "secureString",
+			"metadata": "“AzureDatabricksDeltaLake2_kbb”的“accessToken”的安全字符串"
+		},
+		"AzureFileStorage1_connectionString": {
+			"type": "secureString",
+			"metadata": "“AzureFileStorage1”的“connectionString”的安全字符串"
+		},
+		"AzureSqlDatabase1_password": {
+			"type": "secureString",
+			"metadata": "“AzureSqlDatabase1”的“password”的安全字符串"
+		},
+		"AzureSynapseAnalytics1_connectionString": {
+			"type": "secureString",
+			"metadata": "“AzureSynapseAnalytics1”的“connectionString”的安全字符串"
+		},
+		"FileServer1_password": {
+			"type": "secureString",
+			"metadata": "“FileServer1”的“password”的安全字符串"
+		},
+		"LS301_ASQL_Parm_connectionString": {
+			"type": "secureString",
+			"metadata": "“LS301_ASQL_Parm”的“connectionString”的安全字符串",
+			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=@{linkedService().P_LS_Host};Initial Catalog=@{linkedService().P_LS_DBName};User ID=@{linkedService().P_LS_UserName}"
+		},
+		"LS304_ASQL_ADF_SchProcFwk_connectionString": {
+			"type": "secureString",
+			"metadata": "“LS304_ASQL_ADF_SchProcFwk”的“connectionString”的安全字符串",
+			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=damadffwk01-prd01-sqldb-e2.database.chinacloudapi.cn;Initial Catalog=ADF_SchProcFwk;User ID=etl_prd_dw_pm"
+		},
+		"Sftp1_password": {
+			"type": "secureString",
+			"metadata": "“Sftp1”的“password”的安全字符串"
+		},
+		"alexdevsql_connectionString": {
+			"type": "secureString",
+			"metadata": "“alexdevsql”的“connectionString”的安全字符串"
+		},
+		"alexstoragegen2_accountKey": {
+			"type": "secureString",
+			"metadata": "“alexstoragegen2”的“accountKey”的安全字符串"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "alexsqlserver.database.chinacloudapi.cn"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "alextes"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "alex"
+		},
+		"FileServer1_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\alexdevvm\\localshare"
+		},
+		"FileServer1_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "alex"
+		},
+		"LS300_AKV_damakv02_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://test0311sqlcolumnkey.vault.azure.cn/"
+		},
+		"RestTest_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://zlxocrtest.cognitiveservices.azure.cn/vision/v3.2/read/analyze"
+		},
+		"Sftp1_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "10.1.0.6"
+		},
+		"Sftp1_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sftptest"
+		},
+		"alexstoragegen2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://alexstoragegen2.dfs.core.chinacloudapi.cn/"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "包含链接 ARM 模板的存储帐户的 URI"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "包含链接 ARM 模板的存储帐户的 SAS 令牌"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "AlexDatafactoryTest_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureBlobStorage1_connectionString": {
+						"value": "[parameters('AzureBlobStorage1_connectionString')]"
+					},
+					"AzureDatabricksDeltaLake1_accessToken": {
+						"value": "[parameters('AzureDatabricksDeltaLake1_accessToken')]"
+					},
+					"AzureDatabricksDeltaLake2_kbb_accessToken": {
+						"value": "[parameters('AzureDatabricksDeltaLake2_kbb_accessToken')]"
+					},
+					"AzureFileStorage1_connectionString": {
+						"value": "[parameters('AzureFileStorage1_connectionString')]"
+					},
+					"AzureSqlDatabase1_password": {
+						"value": "[parameters('AzureSqlDatabase1_password')]"
+					},
+					"AzureSynapseAnalytics1_connectionString": {
+						"value": "[parameters('AzureSynapseAnalytics1_connectionString')]"
+					},
+					"alexdevsql_connectionString": {
+						"value": "[parameters('alexdevsql_connectionString')]"
+					},
+					"alexstoragegen2_accountKey": {
+						"value": "[parameters('alexstoragegen2_accountKey')]"
+					},
+					"AzureSqlDatabase1_properties_typeProperties_server": {
+						"value": "[parameters('AzureSqlDatabase1_properties_typeProperties_server')]"
+					},
+					"AzureSqlDatabase1_properties_typeProperties_database": {
+						"value": "[parameters('AzureSqlDatabase1_properties_typeProperties_database')]"
+					},
+					"AzureSqlDatabase1_properties_typeProperties_userName": {
+						"value": "[parameters('AzureSqlDatabase1_properties_typeProperties_userName')]"
+					},
+					"LS300_AKV_damakv02_properties_typeProperties_baseUrl": {
+						"value": "[parameters('LS300_AKV_damakv02_properties_typeProperties_baseUrl')]"
+					},
+					"RestTest_properties_typeProperties_url": {
+						"value": "[parameters('RestTest_properties_typeProperties_url')]"
+					},
+					"alexstoragegen2_properties_typeProperties_url": {
+						"value": "[parameters('alexstoragegen2_properties_typeProperties_url')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "AlexDatafactoryTest_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"FileServer1_password": {
+						"value": "[parameters('FileServer1_password')]"
+					},
+					"LS301_ASQL_Parm_connectionString": {
+						"value": "[parameters('LS301_ASQL_Parm_connectionString')]"
+					},
+					"LS304_ASQL_ADF_SchProcFwk_connectionString": {
+						"value": "[parameters('LS304_ASQL_ADF_SchProcFwk_connectionString')]"
+					},
+					"Sftp1_password": {
+						"value": "[parameters('Sftp1_password')]"
+					},
+					"FileServer1_properties_typeProperties_host": {
+						"value": "[parameters('FileServer1_properties_typeProperties_host')]"
+					},
+					"FileServer1_properties_typeProperties_userId": {
+						"value": "[parameters('FileServer1_properties_typeProperties_userId')]"
+					},
+					"Sftp1_properties_typeProperties_host": {
+						"value": "[parameters('Sftp1_properties_typeProperties_host')]"
+					},
+					"Sftp1_properties_typeProperties_userName": {
+						"value": "[parameters('Sftp1_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'AlexDatafactoryTest_ArmTemplate_0')]"
+			]
+		}
+	]
+}
