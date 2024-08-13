@@ -68,8 +68,20 @@
 		"Sftp1_properties_typeProperties_userName": {
 			"value": "sftptest"
 		},
+		"TestSQL_properties_typeProperties_server": {
+			"value": "40.73.32.251"
+		},
+		"TestSQL_properties_typeProperties_database": {
+			"value": "master"
+		},
+		"TestSQL_properties_typeProperties_userName": {
+			"value": "alex"
+		},
 		"alexstoragegen2_properties_typeProperties_url": {
 			"value": "https://alexstoragegen2.dfs.core.chinacloudapi.cn/"
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"value": "https://alexkey0618.vault.azure.cn/"
 		}
 	}
 }
