@@ -1,0 +1,36 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"headers": {
+						"Ocp-Apim-Subscription-Key": "3c8dcbb4ddd54554879e11764af59db2",
+						"InFile": "\"F:\\ocr.png\"",
+						"ContentType": "multipart/form-data"
+					},
+					"url": "https://zlxocrtest.cognitiveservices.azure.cn/vision/v3.2/read/analyze",
+					"connectVia": {
+						"referenceName": "integrationRuntime1",
+						"type": "IntegrationRuntimeReference"
+					}
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2024-08-06T10:22:41Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,12 @@
+{
+	"name": "alexstoragegen2",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://alexstoragegen2.dfs.core.chinacloudapi.cn/",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEQ4RDc0OTA4LTg5NUEtNDk2QS05NUNELTBBM0JGNzk0QThGRF81YzE4NmFjYS0zOWMyLTRhMGItODM0OS1kMjY0OGE4Y2Q5N2MiDQp9"
+		}
+	}
+}

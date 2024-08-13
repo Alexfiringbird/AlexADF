@@ -1,0 +1,46 @@
+{
+	"name": "DS301_004_DBParm_TBParm_Sink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS301_ASQL_Parm",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"P_DS_Host": {
+				"type": "string"
+			},
+			"P_DS_DBName": {
+				"type": "string"
+			},
+			"P_DS_UserName": {
+				"type": "string"
+			},
+			"P_DS_PassWrod_KV": {
+				"type": "string"
+			},
+			"P_DS_Schema": {
+				"type": "string"
+			},
+			"P_DS_TableName": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "00_YxEDW_SchPorcFwk/301_ASQL_DBParm"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().P_DS_Schema",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().P_DS_TableName",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

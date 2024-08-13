@@ -1,0 +1,149 @@
+{
+	"name": "dwsourcecsv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "alexstoragegen2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "dw1.csv",
+				"fileSystem": "tmp"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": false,
+			"quoteChar": ""
+		},
+		"schema": [
+			{
+				"name": "202008",
+				"type": "String"
+			},
+			{
+				"name": "Sep 16 2017 05:33",
+				"type": "String"
+			},
+			{
+				"name": "A100005",
+				"type": "String"
+			},
+			{
+				"name": "TierF",
+				"type": "String"
+			},
+			{
+				"name": "D1900034",
+				"type": "String"
+			},
+			{
+				"name": "D1900035",
+				"type": "String"
+			},
+			{
+				"name": "A端卖出",
+				"type": "String"
+			},
+			{
+				"name": "DEF",
+				"type": "String"
+			},
+			{
+				"name": "淘宝",
+				"type": "String"
+			},
+			{
+				"name": "京东自营",
+				"type": "String"
+			},
+			{
+				"name": "012210",
+				"type": "String"
+			},
+			{
+				"name": "01",
+				"type": "String"
+			},
+			{
+				"name": "86.2370153824971",
+				"type": "String"
+			},
+			{
+				"name": "99.5347081215748",
+				"type": "String"
+			},
+			{
+				"name": "67.7181149216919",
+				"type": "String"
+			},
+			{
+				"name": "31.4591793024257",
+				"type": "String"
+			},
+			{
+				"name": "81.6907908682203",
+				"type": "String"
+			},
+			{
+				"name": "84.8051783092344",
+				"type": "String"
+			},
+			{
+				"name": "99.1902175355657",
+				"type": "String"
+			},
+			{
+				"name": "3.26251983794501",
+				"type": "String"
+			},
+			{
+				"name": "69.9941983772415",
+				"type": "String"
+			},
+			{
+				"name": "52.6284142642414",
+				"type": "String"
+			},
+			{
+				"name": "93.4018658909024",
+				"type": "String"
+			},
+			{
+				"name": "68.7620282493355",
+				"type": "String"
+			},
+			{
+				"name": "54.6815434259742",
+				"type": "String"
+			},
+			{
+				"name": "8.1109949891041",
+				"type": "String"
+			},
+			{
+				"name": "1996-5-9 22:38:4526",
+				"type": "String"
+			},
+			{
+				"name": "1996-5-9 22:38:4527",
+				"type": "String"
+			},
+			{
+				"name": "自行采购",
+				"type": "String"
+			},
+			{
+				"name": "山西大药房连锁有限公司大雁塔店",
+				"type": "String"
+			},
+			{
+				"name": "D19000330",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

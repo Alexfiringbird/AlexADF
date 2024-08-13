@@ -1,0 +1,19 @@
+{
+	"name": "Binary2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "alexstoragegen2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "ocr.PNG",
+				"fileSystem": "tmp"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

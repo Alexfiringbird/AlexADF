@@ -1,0 +1,34 @@
+{
+	"name": "DS301_001_DBParm_Non_Src",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS301_ASQL_Parm",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"P_DS_Host": {
+				"type": "string",
+				"defaultValue": "damods01-prd01-sqldb-e2.database.chinacloudapi.cn"
+			},
+			"P_DS_DBName": {
+				"type": "string",
+				"defaultValue": "ODS_YueXiuMeasures"
+			},
+			"P_DS_UserName": {
+				"type": "string",
+				"defaultValue": "xiantj_gp2"
+			},
+			"P_DS_PassWrod_KV": {
+				"type": "string",
+				"defaultValue": "AZ-ODS-YueXiuMeasures-PRD-PassWord"
+			}
+		},
+		"folder": {
+			"name": "00_YxEDW_SchPorcFwk/301_ASQL_DBParm"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

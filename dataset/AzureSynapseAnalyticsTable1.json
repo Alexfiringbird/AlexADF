@@ -1,0 +1,174 @@
+{
+	"name": "AzureSynapseAnalyticsTable1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSynapseAnalytics1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "yearmonth",
+				"type": "varchar"
+			},
+			{
+				"name": "salesdate",
+				"type": "varchar"
+			},
+			{
+				"name": "sellercode",
+				"type": "varchar"
+			},
+			{
+				"name": "seller_tier",
+				"type": "varchar"
+			},
+			{
+				"name": "buyercode",
+				"type": "varchar"
+			},
+			{
+				"name": "buyercode_v",
+				"type": "varchar"
+			},
+			{
+				"name": "channel1",
+				"type": "varchar"
+			},
+			{
+				"name": "channel2",
+				"type": "varchar"
+			},
+			{
+				"name": "channel3",
+				"type": "varchar"
+			},
+			{
+				"name": "channel4",
+				"type": "varchar"
+			},
+			{
+				"name": "product_code",
+				"type": "varchar"
+			},
+			{
+				"name": "brand_code",
+				"type": "varchar"
+			},
+			{
+				"name": "amount",
+				"type": "decimal",
+				"precision": 16,
+				"scale": 5
+			},
+			{
+				"name": "qty",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 6
+			},
+			{
+				"name": "stp",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 6
+			},
+			{
+				"name": "stp_amount",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 6
+			},
+			{
+				"name": "amount_ly",
+				"type": "decimal",
+				"precision": 16,
+				"scale": 5
+			},
+			{
+				"name": "qty_ly",
+				"type": "decimal",
+				"precision": 19,
+				"scale": 6
+			},
+			{
+				"name": "stp_ly",
+				"type": "decimal",
+				"precision": 34,
+				"scale": 11
+			},
+			{
+				"name": "stp_amount_ly",
+				"type": "decimal",
+				"precision": 34,
+				"scale": 11
+			},
+			{
+				"name": "target",
+				"type": "decimal",
+				"precision": 34,
+				"scale": 11
+			},
+			{
+				"name": "qty_target",
+				"type": "decimal",
+				"precision": 34,
+				"scale": 11
+			},
+			{
+				"name": "stp_target",
+				"type": "decimal",
+				"precision": 34,
+				"scale": 11
+			},
+			{
+				"name": "stp_qty_target",
+				"type": "decimal",
+				"precision": 34,
+				"scale": 11
+			},
+			{
+				"name": "t1_target",
+				"type": "decimal",
+				"precision": 34,
+				"scale": 11
+			},
+			{
+				"name": "t1_qty_target",
+				"type": "decimal",
+				"precision": 34,
+				"scale": 11
+			},
+			{
+				"name": "crt_dttm",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "updt_dttm",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "channel5",
+				"type": "varchar"
+			},
+			{
+				"name": "actual_terminal_name",
+				"type": "varchar"
+			},
+			{
+				"name": "actual_terminal_code",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "CustomerTable"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

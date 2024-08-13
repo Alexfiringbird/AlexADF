@@ -1,0 +1,40 @@
+{
+	"name": "LS301_ASQL_Parm",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"description": "环境：PRD\nHost：Parm\n库名：Parm\nRT:AutoRT",
+		"parameters": {
+			"P_LS_Host": {
+				"type": "string"
+			},
+			"P_LS_DBName": {
+				"type": "string"
+			},
+			"P_LS_UserName": {
+				"type": "string"
+			},
+			"P_LS_PassWord_KV": {
+				"type": "string"
+			}
+		},
+		"annotations": [
+			"参数化Azure SQLDB数据源",
+			"ProcFwk专用"
+		],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=@{linkedService().P_LS_Host};Initial Catalog=@{linkedService().P_LS_DBName};User ID=@{linkedService().P_LS_UserName}",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LS300_AKV_damakv02",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": {
+					"value": "@linkedService().P_LS_PassWord_KV",
+					"type": "Expression"
+				}
+			}
+		}
+	}
+}

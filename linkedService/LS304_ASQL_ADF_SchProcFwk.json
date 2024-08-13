@@ -1,0 +1,23 @@
+{
+	"name": "LS304_ASQL_ADF_SchProcFwk",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"description": "环境：PRD\nHost：damadffwk01-prd01-sqldb-e2.database.chinacloudapi.cn\n库名：ADF_SchPorcFwk\nRT:AutoRT\n",
+		"annotations": [
+			"ADF元数据",
+			"ProcFwk专用"
+		],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=damadffwk01-prd01-sqldb-e2.database.chinacloudapi.cn;Initial Catalog=ADF_SchProcFwk;User ID=etl_prd_dw_pm",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "LS300_AKV_damakv02",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "AZ-ADF-SchProcFwk-Prd-PassWord"
+			}
+		}
+	}
+}

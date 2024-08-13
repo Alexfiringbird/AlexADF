@@ -1,0 +1,11 @@
+{
+	"name": "LS300_AKV_damakv02",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://test0311sqlcolumnkey.vault.azure.cn/"
+		}
+	}
+}
