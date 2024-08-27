@@ -1,0 +1,7 @@
+{
+	"name": "AzurePostgreSql738",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/413eb882-b134-4b64-b202-519e1fe3a994/resourceGroups/AlexMySQL/providers/Microsoft.DBforPostgreSQL/flexibleServers/alexpgsqlvnet",
+		"groupId": "postgresqlServer"
+	}
+}
