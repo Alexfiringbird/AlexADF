@@ -1,0 +1,16 @@
+{
+	"name": "AzurePostgreSql1",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzurePostgreSql",
+		"typeProperties": {
+			"connectionString": "host=pg0723.postgres.database.chinacloudapi.cn;port=5432;database=postgres;uid=lihong;encryptionmethod=1;validateservercertificate=1;pgchannelbinding=require",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJhYzU2MDlmMS1lODFmLTRmMDMtYjFkZS01N2EyZDQxZmYwNzAiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntime1",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
