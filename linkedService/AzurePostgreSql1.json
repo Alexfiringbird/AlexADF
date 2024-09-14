@@ -5,8 +5,8 @@
 		"annotations": [],
 		"type": "AzurePostgreSql",
 		"typeProperties": {
-			"connectionString": "host=pg0723.postgres.database.chinacloudapi.cn;port=5432;database=postgres;uid=lihong;encryptionmethod=1;validateservercertificate=1",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI4MWQzM2U4OC02NDVmLTRmMTgtYWU0MS1kM2EwZjg2ZTRiYmYiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"connectionString": "host=pg0723.postgres.database.chinacloudapi.cn;port=5432;database=postgres;uid=lihong;encryptionmethod=1;validateservercertificate=0",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI1ZTI3ZWQ5Zi04YzliLTRjYTQtODRlYy1hYTczN2E1Nzk0MTUiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "integrationRuntime1",
