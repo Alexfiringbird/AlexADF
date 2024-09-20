@@ -5,7 +5,7 @@
 		"annotations": [],
 		"type": "AzurePostgreSql",
 		"typeProperties": {
-			"connectionString": "host=pg0723.postgres.database.chinacloudapi.cn;port=5432;database=postgres;uid=lihong;encryptionmethod=1;validateservercertificate=0",
+			"connectionString": "host=pg0723.postgres.database.chinacloudapi.cn;port=5432;database=postgres;uid=lihong;encryptionmethod=1;validateservercertificate=0;sslmode=prefer",
 			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIwNGRkN2E2Ny1kODczLTRiOGMtYmY0Ni01OGUwYjU3NWExZTkiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
