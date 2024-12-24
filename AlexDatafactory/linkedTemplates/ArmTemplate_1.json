@@ -1,0 +1,930 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "数据工厂名称",
+			"defaultValue": "AlexDatafactory"
+		},
+		"AzureMySql1_connectionString": {
+			"type": "secureString",
+			"metadata": "“AzureMySql1”的“connectionString”的安全字符串"
+		},
+		"AzurePostgreSql1_connectionString": {
+			"type": "secureString",
+			"metadata": "“AzurePostgreSql1”的“connectionString”的安全字符串"
+		},
+		"FileServer1_password": {
+			"type": "secureString",
+			"metadata": "“FileServer1”的“password”的安全字符串"
+		},
+		"LS301_ASQL_Parm_connectionString": {
+			"type": "secureString",
+			"metadata": "“LS301_ASQL_Parm”的“connectionString”的安全字符串",
+			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=@{linkedService().P_LS_Host};Initial Catalog=@{linkedService().P_LS_DBName};User ID=@{linkedService().P_LS_UserName}"
+		},
+		"LS304_ASQL_ADF_SchProcFwk_connectionString": {
+			"type": "secureString",
+			"metadata": "“LS304_ASQL_ADF_SchProcFwk”的“connectionString”的安全字符串",
+			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=damadffwk01-prd01-sqldb-e2.database.chinacloudapi.cn;Initial Catalog=ADF_SchProcFwk;User ID=etl_prd_dw_pm"
+		},
+		"Sftp1_password": {
+			"type": "secureString",
+			"metadata": "“Sftp1”的“password”的安全字符串"
+		},
+		"mysqlodbc_connectionString": {
+			"type": "secureString",
+			"metadata": "“mysqlodbc”的“connectionString”的安全字符串"
+		},
+		"mysqlodbc_password": {
+			"type": "secureString",
+			"metadata": "“mysqlodbc”的“password”的安全字符串"
+		},
+		"FileServer1_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\alexdevvm\\localshare"
+		},
+		"FileServer1_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "alex"
+		},
+		"Sftp1_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "10.1.0.6"
+		},
+		"Sftp1_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sftptest"
+		},
+		"TestSQL_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "40.73.32.251"
+		},
+		"TestSQL_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "master"
+		},
+		"TestSQL_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "alex"
+		},
+		"mysqlodbc_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "myuser"
+		},
+		"AzurePostgreSql738_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/413eb882-b134-4b64-b202-519e1fe3a994/resourceGroups/AlexMySQL/providers/Microsoft.DBforPostgreSQL/flexibleServers/alexpgsqlvnet"
+		},
+		"AzurePostgreSql738_properties_groupId": {
+			"type": "string",
+			"defaultValue": "postgresqlServer"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSynapseAnalyticsTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSynapseAnalytics1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "yearmonth",
+						"type": "varchar"
+					},
+					{
+						"name": "salesdate",
+						"type": "varchar"
+					},
+					{
+						"name": "sellercode",
+						"type": "varchar"
+					},
+					{
+						"name": "seller_tier",
+						"type": "varchar"
+					},
+					{
+						"name": "buyercode",
+						"type": "varchar"
+					},
+					{
+						"name": "buyercode_v",
+						"type": "varchar"
+					},
+					{
+						"name": "channel1",
+						"type": "varchar"
+					},
+					{
+						"name": "channel2",
+						"type": "varchar"
+					},
+					{
+						"name": "channel3",
+						"type": "varchar"
+					},
+					{
+						"name": "channel4",
+						"type": "varchar"
+					},
+					{
+						"name": "product_code",
+						"type": "varchar"
+					},
+					{
+						"name": "brand_code",
+						"type": "varchar"
+					},
+					{
+						"name": "amount",
+						"type": "decimal",
+						"precision": 16,
+						"scale": 5
+					},
+					{
+						"name": "qty",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 6
+					},
+					{
+						"name": "stp",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 6
+					},
+					{
+						"name": "stp_amount",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 6
+					},
+					{
+						"name": "amount_ly",
+						"type": "decimal",
+						"precision": 16,
+						"scale": 5
+					},
+					{
+						"name": "qty_ly",
+						"type": "decimal",
+						"precision": 19,
+						"scale": 6
+					},
+					{
+						"name": "stp_ly",
+						"type": "decimal",
+						"precision": 34,
+						"scale": 11
+					},
+					{
+						"name": "stp_amount_ly",
+						"type": "decimal",
+						"precision": 34,
+						"scale": 11
+					},
+					{
+						"name": "target",
+						"type": "decimal",
+						"precision": 34,
+						"scale": 11
+					},
+					{
+						"name": "qty_target",
+						"type": "decimal",
+						"precision": 34,
+						"scale": 11
+					},
+					{
+						"name": "stp_target",
+						"type": "decimal",
+						"precision": 34,
+						"scale": 11
+					},
+					{
+						"name": "stp_qty_target",
+						"type": "decimal",
+						"precision": 34,
+						"scale": 11
+					},
+					{
+						"name": "t1_target",
+						"type": "decimal",
+						"precision": 34,
+						"scale": 11
+					},
+					{
+						"name": "t1_qty_target",
+						"type": "decimal",
+						"precision": 34,
+						"scale": 11
+					},
+					{
+						"name": "crt_dttm",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "updt_dttm",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "channel5",
+						"type": "varchar"
+					},
+					{
+						"name": "actual_terminal_name",
+						"type": "varchar"
+					},
+					{
+						"name": "actual_terminal_code",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "CustomerTable"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Binary1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "alexstoragegen2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "tmpdata"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Binary2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "alexstoragegen2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "ocr.PNG",
+						"fileSystem": "tmp"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BinarySource')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureFileStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureFileStorageLocation",
+						"fileName": "D4657882-5C02-8919-F906-72ABFFE3BA0C_crm_snr_medconnect_work_order_vw.parquet"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "alexstoragegen2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "ocr.PNG",
+						"fileSystem": "tmp"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Parquet1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "alexstoragegen2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "tmpdata"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RestResource1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "RestTest",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "alexdevsql",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Name",
+						"type": "varchar"
+					},
+					{
+						"name": "test",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "TestA"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerTable2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "alexdevsql",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Testb"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dwsourcecsv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "alexstoragegen2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "dw1.csv",
+						"fileSystem": "tmp"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": false,
+					"quoteChar": ""
+				},
+				"schema": [
+					{
+						"name": "202008",
+						"type": "String"
+					},
+					{
+						"name": "Sep 16 2017 05:33",
+						"type": "String"
+					},
+					{
+						"name": "A100005",
+						"type": "String"
+					},
+					{
+						"name": "TierF",
+						"type": "String"
+					},
+					{
+						"name": "D1900034",
+						"type": "String"
+					},
+					{
+						"name": "D1900035",
+						"type": "String"
+					},
+					{
+						"name": "A端卖出",
+						"type": "String"
+					},
+					{
+						"name": "DEF",
+						"type": "String"
+					},
+					{
+						"name": "淘宝",
+						"type": "String"
+					},
+					{
+						"name": "京东自营",
+						"type": "String"
+					},
+					{
+						"name": "012210",
+						"type": "String"
+					},
+					{
+						"name": "01",
+						"type": "String"
+					},
+					{
+						"name": "86.2370153824971",
+						"type": "String"
+					},
+					{
+						"name": "99.5347081215748",
+						"type": "String"
+					},
+					{
+						"name": "67.7181149216919",
+						"type": "String"
+					},
+					{
+						"name": "31.4591793024257",
+						"type": "String"
+					},
+					{
+						"name": "81.6907908682203",
+						"type": "String"
+					},
+					{
+						"name": "84.8051783092344",
+						"type": "String"
+					},
+					{
+						"name": "99.1902175355657",
+						"type": "String"
+					},
+					{
+						"name": "3.26251983794501",
+						"type": "String"
+					},
+					{
+						"name": "69.9941983772415",
+						"type": "String"
+					},
+					{
+						"name": "52.6284142642414",
+						"type": "String"
+					},
+					{
+						"name": "93.4018658909024",
+						"type": "String"
+					},
+					{
+						"name": "68.7620282493355",
+						"type": "String"
+					},
+					{
+						"name": "54.6815434259742",
+						"type": "String"
+					},
+					{
+						"name": "8.1109949891041",
+						"type": "String"
+					},
+					{
+						"name": "1996-5-9 22:38:4526",
+						"type": "String"
+					},
+					{
+						"name": "1996-5-9 22:38:4527",
+						"type": "String"
+					},
+					{
+						"name": "自行采购",
+						"type": "String"
+					},
+					{
+						"name": "山西大药房连锁有限公司大雁塔店",
+						"type": "String"
+					},
+					{
+						"name": "D19000330",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureMySql1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureMySql",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureMySql1_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime1",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzurePostgreSql1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzurePostgreSql",
+				"typeProperties": {
+					"connectionString": "[parameters('AzurePostgreSql1_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime1",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FileServer1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('FileServer1_properties_typeProperties_host')]",
+					"userId": "[parameters('FileServer1_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('FileServer1_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime1",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS301_ASQL_Parm')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "环境：PRD\nHost：Parm\n库名：Parm\nRT:AutoRT",
+				"parameters": {
+					"P_LS_Host": {
+						"type": "string"
+					},
+					"P_LS_DBName": {
+						"type": "string"
+					},
+					"P_LS_UserName": {
+						"type": "string"
+					},
+					"P_LS_PassWord_KV": {
+						"type": "string"
+					}
+				},
+				"annotations": [
+					"参数化Azure SQLDB数据源",
+					"ProcFwk专用"
+				],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('LS301_ASQL_Parm_connectionString')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "LS300_AKV_damakv02",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": {
+							"value": "@linkedService().P_LS_PassWord_KV",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS304_ASQL_ADF_SchProcFwk')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "环境：PRD\nHost：damadffwk01-prd01-sqldb-e2.database.chinacloudapi.cn\n库名：ADF_SchPorcFwk\nRT:AutoRT\n",
+				"annotations": [
+					"ADF元数据",
+					"ProcFwk专用"
+				],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('LS304_ASQL_ADF_SchProcFwk_connectionString')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "LS300_AKV_damakv02",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "AZ-ADF-SchProcFwk-Prd-PassWord"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Sftp1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Sftp",
+				"typeProperties": {
+					"host": "[parameters('Sftp1_properties_typeProperties_host')]",
+					"port": 22,
+					"skipHostKeyValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('Sftp1_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('Sftp1_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime1",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/TestSQL')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"server": "[parameters('TestSQL_properties_typeProperties_server')]",
+					"database": "[parameters('TestSQL_properties_typeProperties_database')]",
+					"encrypt": "optional",
+					"trustServerCertificate": true,
+					"authenticationType": "SQL",
+					"userName": "[parameters('TestSQL_properties_typeProperties_userName')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "AzureKeyVault1",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "alexpass"
+					}
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime1",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/mysqlodbc')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Odbc",
+				"typeProperties": {
+					"connectionString": {
+						"type": "SecureString",
+						"value": "[parameters('mysqlodbc_connectionString')]"
+					},
+					"authenticationType": "Basic",
+					"userName": "[parameters('mysqlodbc_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('mysqlodbc_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "integrationRuntime1",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/default/AzurePostgreSql738')]",
+			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"privateLinkResourceId": "[parameters('AzurePostgreSql738_properties_privateLinkResourceId')]",
+				"groupId": "[parameters('AzurePostgreSql738_properties_groupId')]"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/testcopy')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "SqlServerTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Parquet1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Copy data1_copy1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "SqlServerTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Parquet1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2024-06-12T06:35:10Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SqlServerTable1')]",
+				"[concat(variables('factoryId'), '/datasets/Parquet1')]"
+			]
+		}
+	]
+}

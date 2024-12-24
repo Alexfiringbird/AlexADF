@@ -1,0 +1,1078 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "数据工厂名称",
+			"defaultValue": "AlexDatafactory"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Binaryimg')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "FileServer1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "FileServerLocation",
+						"fileName": "ocr.PNG"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS301_001_DBParm_Non_Src')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS301_ASQL_Parm",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"P_DS_Host": {
+						"type": "string",
+						"defaultValue": "damods01-prd01-sqldb-e2.database.chinacloudapi.cn"
+					},
+					"P_DS_DBName": {
+						"type": "string",
+						"defaultValue": "ODS_YueXiuMeasures"
+					},
+					"P_DS_UserName": {
+						"type": "string",
+						"defaultValue": "xiantj_gp2"
+					},
+					"P_DS_PassWrod_KV": {
+						"type": "string",
+						"defaultValue": "AZ-ODS-YueXiuMeasures-PRD-PassWord"
+					}
+				},
+				"folder": {
+					"name": "00_YxEDW_SchPorcFwk/301_ASQL_DBParm"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DS301_004_DBParm_TBParm_Sink')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS301_ASQL_Parm",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"P_DS_Host": {
+						"type": "string"
+					},
+					"P_DS_DBName": {
+						"type": "string"
+					},
+					"P_DS_UserName": {
+						"type": "string"
+					},
+					"P_DS_PassWrod_KV": {
+						"type": "string"
+					},
+					"P_DS_Schema": {
+						"type": "string"
+					},
+					"P_DS_TableName": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "00_YxEDW_SchPorcFwk/301_ASQL_DBParm"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().P_DS_Schema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().P_DS_TableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/localpng')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "FileServer1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "FileServerLocation",
+						"fileName": "ocr.PNG"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sftpbin')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Sftp1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "SftpLocation",
+						"folderPath": "/test"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "SqlServerTable1",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DelimitedText1",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          ID as integer,",
+						"          Name as string,",
+						"          test as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> source1",
+						"source1 derive(test = \"a\") ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SFTPTest')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "SftpReadSettings",
+									"recursive": false,
+									"deleteFilesAfterCompletion": false,
+									"disableChunking": true
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "sftpbin",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Binary1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2024-07-03T06:12:32Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/sftpbin')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/W01_FullDataCopy_Parm_V02')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "FullDataCopyFromSrc",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Set Log Taks Running",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.04:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 60,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [
+							{
+								"name": "TaskID",
+								"value": "@pipeline().parameters.P_P_TaskID"
+							}
+						],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "@pipeline().parameters.P_P_SqlQueryString",
+									"type": "Expression"
+								},
+								"queryTimeout": "06:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": {
+									"value": "@{pipeline().parameters.P_P_PreRunScript}",
+									"type": "Expression"
+								},
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": true,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"dataIntegrationUnits": 2,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS301_001_DBParm_Non_Src",
+								"type": "DatasetReference",
+								"parameters": {
+									"P_DS_Host": {
+										"value": "@pipeline().parameters.P_P_SourceServer",
+										"type": "Expression"
+									},
+									"P_DS_DBName": {
+										"value": "@pipeline().parameters.P_P_SourceDBName",
+										"type": "Expression"
+									},
+									"P_DS_UserName": {
+										"value": "@pipeline().parameters.P_P_SourceUserName",
+										"type": "Expression"
+									},
+									"P_DS_PassWrod_KV": {
+										"value": "@pipeline().parameters.P_P_SourcePassWord_KV",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS301_004_DBParm_TBParm_Sink",
+								"type": "DatasetReference",
+								"parameters": {
+									"P_DS_Host": {
+										"value": "@pipeline().parameters.P_P_SinkServer",
+										"type": "Expression"
+									},
+									"P_DS_DBName": {
+										"value": "@pipeline().parameters.P_P_SinkDBName",
+										"type": "Expression"
+									},
+									"P_DS_UserName": {
+										"value": "@pipeline().parameters.P_P_SinkUserName",
+										"type": "Expression"
+									},
+									"P_DS_PassWrod_KV": {
+										"value": "@pipeline().parameters.P_P_SinkPassWord_KV",
+										"type": "Expression"
+									},
+									"P_DS_Schema": {
+										"value": "@pipeline().parameters.P_P_SinkSchema",
+										"type": "Expression"
+									},
+									"P_DS_TableName": {
+										"value": "@pipeline().parameters.P_P_SinkTableName",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "Set Log Taks Running",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.00:10:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [
+							{
+								"name": "TaskID",
+								"value": "@pipeline().parameters.P_P_TaskID"
+							}
+						],
+						"typeProperties": {
+							"storedProcedureName": "[[adf].[P_SetLogTaskRunning]",
+							"storedProcedureParameters": {
+								"DistributeTasksPLRunId": {
+									"value": {
+										"value": "@pipeline()?.TriggeredByPipelineRunId",
+										"type": "Expression"
+									},
+									"type": "Guid"
+								},
+								"ExceFlag": {
+									"value": "41",
+									"type": "Int32"
+								},
+								"ExecutionInfo": {
+									"value": null,
+									"type": "String"
+								},
+								"GetTasksPLRunId": {
+									"value": null,
+									"type": "Guid"
+								},
+								"ParmSettings": {
+									"value": null,
+									"type": "String"
+								},
+								"PollTasksPLRunId": {
+									"value": null,
+									"type": "Guid"
+								},
+								"StepDesc": {
+									"value": {
+										"value": "@concat(pipeline().Pipeline, ':Update TaskExecution TaskStatus = 1-Running')",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"TaskId": {
+									"value": {
+										"value": "@pipeline().parameters.P_P_TaskID",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"TaskKey": {
+									"value": {
+										"value": "@pipeline().parameters.P_P_TaskKey",
+										"type": "Expression"
+									},
+									"type": "Int64"
+								},
+								"WorkerPLName": {
+									"value": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"WorkerPLRunId": {
+									"value": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"type": "Guid"
+								},
+								"InitiateTasksDT": {
+									"value": {
+										"value": "@pipeline().parameters.P_P_InitiateTasksDT",
+										"type": "Expression"
+									},
+									"type": "Int64"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "LS304_ASQL_ADF_SchProcFwk",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Set Log Taks Success",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "FullDataCopyFromSrc",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.00:10:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [
+							{
+								"name": "TaskID",
+								"value": "@pipeline().parameters.P_P_TaskID"
+							}
+						],
+						"typeProperties": {
+							"storedProcedureName": "[[adf].[P_SetLogTaskSuccess]",
+							"storedProcedureParameters": {
+								"DurationSec": {
+									"value": {
+										"value": "@activity('FullDataCopyFromSrc').output.copyDuration",
+										"type": "Expression"
+									},
+									"type": "Int32"
+								},
+								"ExecutionInfo": {
+									"value": null,
+									"type": "String"
+								},
+								"WorkerPLName": {
+									"value": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"WorkerPLRunId": {
+									"value": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"type": "Guid"
+								},
+								"QueueDurationSec": {
+									"value": {
+										"value": "@activity('FullDataCopyFromSrc').output.executionDetails[0].profile.queue.duration",
+										"type": "Expression"
+									},
+									"type": "Int32"
+								},
+								"RowsCopied": {
+									"value": {
+										"value": "@activity('FullDataCopyFromSrc').output.rowsCopied",
+										"type": "Expression"
+									},
+									"type": "Int64"
+								},
+								"RowsRead": {
+									"value": {
+										"value": "@activity('FullDataCopyFromSrc').output.rowsRead",
+										"type": "Expression"
+									},
+									"type": "Int64"
+								},
+								"TaskID": {
+									"value": {
+										"value": "@pipeline().parameters.P_P_TaskID",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"TaskKey": {
+									"value": {
+										"value": "@pipeline().parameters.P_P_TaskKey",
+										"type": "Expression"
+									},
+									"type": "Int64"
+								},
+								"Throughput_Kb": {
+									"value": {
+										"value": "@activity('FullDataCopyFromSrc').output.throughput",
+										"type": "Expression"
+									},
+									"type": "Decimal"
+								},
+								"PollTasksPLRunId": {
+									"value": null,
+									"type": "Guid"
+								},
+								"GetTasksPLRunId": {
+									"value": null,
+									"type": "Guid"
+								},
+								"DistributeTasksPLRunId": {
+									"value": {
+										"value": "@pipeline()?.TriggeredByPipelineRunId",
+										"type": "Expression"
+									},
+									"type": "Guid"
+								},
+								"StepDesc": {
+									"value": {
+										"value": "@concat(pipeline().Pipeline,':Update TaskExecution TaskStatus = 2-Success')",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"ParmSettings": {
+									"value": null,
+									"type": "String"
+								},
+								"ExceFlag": {
+									"value": "42",
+									"type": "Int32"
+								},
+								"InitiateTasksDT": {
+									"value": {
+										"value": "@pipeline().parameters.P_P_InitiateTasksDT",
+										"type": "Expression"
+									},
+									"type": "Int64"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "LS304_ASQL_ADF_SchProcFwk",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Set Log Taks Failed",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "FullDataCopyFromSrc",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.00:10:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [
+							{
+								"name": "TaskID",
+								"value": "@pipeline().parameters.P_P_TaskID"
+							}
+						],
+						"typeProperties": {
+							"storedProcedureName": "[[adf].[P_SetLogTaskFailed]",
+							"storedProcedureParameters": {
+								"ErroInfo": {
+									"value": {
+										"value": "@concat('{\"Code\":'\n,activity('FullDataCopyFromSrc').output.errors[0].Code\n,',\"Message\":\"'\n,activity('FullDataCopyFromSrc').output.errors[0].Message\n,'\"}')\n",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"WorkerPLName": {
+									"value": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"WorkerPLRunId": {
+									"value": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"type": "Guid"
+								},
+								"TaskID": {
+									"value": {
+										"value": "@pipeline().parameters.P_P_TaskID",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"TaskKey": {
+									"value": {
+										"value": "@pipeline().parameters.P_P_TaskKey",
+										"type": "Expression"
+									},
+									"type": "Int64"
+								},
+								"QueueDurationSec": {
+									"value": {
+										"value": "@activity('FullDataCopyFromSrc').output.executionDetails[0].profile.queue.duration",
+										"type": "Expression"
+									},
+									"type": "Int32"
+								},
+								"DurationSec": {
+									"value": {
+										"value": "@activity('FullDataCopyFromSrc').output.copyDuration",
+										"type": "Expression"
+									},
+									"type": "Int32"
+								},
+								"ExecutionInfo": {
+									"value": null,
+									"type": "String"
+								},
+								"PollTasksPLRunId": {
+									"value": null,
+									"type": "String"
+								},
+								"GetTasksPLRunId": {
+									"value": null,
+									"type": "String"
+								},
+								"DistributeTasksPLRunId": {
+									"value": {
+										"value": "@pipeline()?.TriggeredByPipelineRunId",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"StepDesc": {
+									"value": {
+										"value": "@concat(pipeline().Pipeline,':Update TaskExecution TaskStatus = 3-Failed')",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"ExceFlag": {
+									"value": "42",
+									"type": "Int32"
+								},
+								"ParmSettings": {
+									"value": null,
+									"type": "String"
+								},
+								"InitiateTasksDT": {
+									"value": {
+										"value": "@pipeline().parameters.P_P_InitiateTasksDT",
+										"type": "Expression"
+									},
+									"type": "Int64"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "LS304_ASQL_ADF_SchProcFwk",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "SetTaskStatusSuccess",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Set Log Taks Success",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.00:10:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [
+							{
+								"name": "TaskID",
+								"value": "@pipeline().parameters.P_P_TaskID"
+							}
+						],
+						"typeProperties": {
+							"storedProcedureName": "[[adf].[P_SetTaskStatus]",
+							"storedProcedureParameters": {
+								"TaskKey": {
+									"value": {
+										"value": "@pipeline().parameters.P_P_TaskKey",
+										"type": "Expression"
+									},
+									"type": "Int64"
+								},
+								"TaskStatus": {
+									"value": "2",
+									"type": "Int32"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "LS304_ASQL_ADF_SchProcFwk",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "SetTaskStatusFailed",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Set Log Taks Failed",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.00:10:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [
+							{
+								"name": "TaskID",
+								"value": "@pipeline().parameters.P_P_TaskID"
+							}
+						],
+						"typeProperties": {
+							"storedProcedureName": "[[adf].[P_SetTaskStatus]",
+							"storedProcedureParameters": {
+								"TaskKey": {
+									"value": {
+										"value": "@pipeline().parameters.P_P_TaskKey",
+										"type": "Expression"
+									},
+									"type": "Int64"
+								},
+								"TaskStatus": {
+									"value": "3",
+									"type": "Int32"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "LS304_ASQL_ADF_SchProcFwk",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"P_P_TaskKey": {
+						"type": "int",
+						"defaultValue": 3
+					},
+					"P_P_TaskID": {
+						"type": "string",
+						"defaultValue": "WalkSource2_distinct_ADF001"
+					},
+					"P_P_SourceServer": {
+						"type": "string",
+						"defaultValue": "adfsqllab.database.chinacloudapi.cn"
+					},
+					"P_P_SourceDBName": {
+						"type": "string",
+						"defaultValue": "frameworkmetadata"
+					},
+					"P_P_SourceUserName": {
+						"type": "string",
+						"defaultValue": "sqladmin"
+					},
+					"P_P_SourcePassWord_KV": {
+						"type": "string",
+						"defaultValue": "AZ-ODS-YueXiuMeasures-PRD-PassWord"
+					},
+					"P_P_SqlQueryString": {
+						"type": "string",
+						"defaultValue": "SELECT RunKey       ,osrc       ,tgt       ,lvl       ,objecttype       ,dbo.getlocaldate(8) DataDate   FROM dbo.WalkSource2_distinct"
+					},
+					"P_P_PreRunScript": {
+						"type": "string",
+						"defaultValue": "IF OBJECT_ID('dbo.dwd_WalkSource2_distinct','U') IS NOT NULL TRUNCATE TABLE dbo.dwd_WalkSource2_distinct"
+					},
+					"P_P_SinkServer": {
+						"type": "string",
+						"defaultValue": "adfsqllab.database.chinacloudapi.cn"
+					},
+					"P_P_SinkDBName": {
+						"type": "string",
+						"defaultValue": "frameworkmetadata"
+					},
+					"P_P_SinkSchema": {
+						"type": "string",
+						"defaultValue": "dbo"
+					},
+					"P_P_SinkTableName": {
+						"type": "string",
+						"defaultValue": "dwd_WalkSource2_distinct"
+					},
+					"P_P_SinkUserName": {
+						"type": "string",
+						"defaultValue": "sqladmin"
+					},
+					"P_P_SinkPassWord_KV": {
+						"type": "string",
+						"defaultValue": "AZ-DW-YueXiuMeasures-PRD-PassWord"
+					},
+					"P_P_InitiateTasksDT": {
+						"type": "int"
+					}
+				},
+				"folder": {
+					"name": "00_YxEDW_SchProcFwk/02_JobWorkers"
+				},
+				"annotations": [],
+				"lastPublishTime": "2024-05-11T08:39:35Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DS301_001_DBParm_Non_Src')]",
+				"[concat(variables('factoryId'), '/datasets/DS301_004_DBParm_TBParm_Sink')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/test')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "Set variable1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow1",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "Lookup1",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": "select name from testb",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SqlServerTable2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Lookup1",
+								"dependencyConditions": [
+									"Skipped"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "testvar",
+							"value": {
+								"value": "@activity('Lookup1').output.firstRow.name",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"testvar": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2024-06-24T02:10:59Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/testcopys')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "dataflow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow1",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2024-06-12T06:35:10Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow1')]"
+			]
+		}
+	]
+}
