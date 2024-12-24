@@ -1,0 +1,28 @@
+{
+	"name": "AzureDatabrickstest",
+	"properties": {
+		"description": "testarm",
+		"parameters": {
+			"workspaceurl": {
+				"type": "string",
+				"defaultValue": "https://adb-1712255893777130.2.databricks.azure.cn/"
+			},
+			"workspaceresourceid": {
+				"type": "string",
+				"defaultValue": "/subscriptions/413eb882-b134-4b64-b202-519e1fe3a994/resourceGroups/AlexDataBricks/providers/Microsoft.Databricks/workspaces/alextestdatabricks"
+			},
+			"clusterid": {
+				"type": "string",
+				"defaultValue": "1209-023455-i618d0j5"
+			}
+		},
+		"annotations": [],
+		"type": "AzureDatabricks",
+		"typeProperties": {
+			"domain": "@linkedService().workspaceurl",
+			"authentication": "MSI",
+			"workspaceResourceId": "@linkedService().workspaceresourceid",
+			"existingClusterId": "@linkedService().clusterid"
+		}
+	}
+}
